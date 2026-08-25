@@ -35,12 +35,36 @@ header{position:sticky;top:0;z-index:50;backdrop-filter:blur(24px);background:rg
 .account-bar input{background:transparent;border:none;border-bottom:1px solid var(--border2);color:var(--text);font-size:22px;font-weight:700;width:120px;outline:none;padding:2px 0;letter-spacing:-.02em}
 .account-meta{font-size:13px;color:var(--muted);margin-left:auto}
 .account-meta span{color:var(--text);font-weight:600}
+
+/* ── Add stock bar ── */
+.add-stock-bar{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.add-stock-wrap{position:relative;display:flex;gap:8px;align-items:center}
+#stockSearch{background:var(--glass2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-size:14px;padding:8px 14px;outline:none;width:220px;font-family:'SF Mono','Fira Code',monospace;text-transform:uppercase;transition:border-color .15s}
+#stockSearch:focus{border-color:var(--accent)}
+#stockSearch::placeholder{text-transform:none;color:var(--muted)}
+.btn-add{font-size:13px;padding:8px 18px;border-radius:var(--radius-sm);border:none;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;transition:opacity .15s;white-space:nowrap;box-shadow:0 0 20px rgba(108,99,255,.3)}
+.btn-add:hover{opacity:.85}
+.add-stock-hint{font-size:12px;color:var(--muted)}
+.stock-dropdown{position:absolute;top:calc(100% + 6px);left:0;width:280px;background:#0f0f16;border:1px solid var(--border2);border-radius:var(--radius-sm);z-index:100;display:none;box-shadow:0 16px 40px rgba(0,0,0,.7);overflow:hidden}
+.stock-dropdown.open{display:block}
+.sd-item{padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;transition:background .1s}
+.sd-item:last-child{border-bottom:none}
+.sd-item:hover{background:var(--glass2)}
+.sd-ticker{font-size:13px;font-weight:700;font-family:'SF Mono','Fira Code',monospace;color:#fff}
+.sd-name{font-size:11px;color:var(--muted);margin-top:2px}
+
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem}
-.card{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;transition:box-shadow .4s,border-color .4s,transform .2s;backdrop-filter:blur(12px);cursor:pointer}
+.card{background:var(--glass);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;transition:box-shadow .4s,border-color .4s,transform .2s;backdrop-filter:blur(12px);cursor:pointer;position:relative}
 .card:hover{transform:translateY(-2px)}
 .card.up{box-shadow:0 0 28px var(--up-glow);border-color:rgba(34,197,94,.25)}
 .card.down{box-shadow:0 0 28px var(--down-glow);border-color:rgba(239,68,68,.25)}
 .card.flat{box-shadow:0 0 22px var(--flat-glow);border-color:rgba(234,179,8,.22)}
+
+/* Remove button */
+.card-remove{position:absolute;top:10px;right:10px;background:rgba(239,68,68,0);border:none;color:transparent;font-size:15px;cursor:pointer;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1;z-index:2}
+.card:hover .card-remove{background:rgba(239,68,68,.15);color:var(--down)}
+.card-remove:hover{background:rgba(239,68,68,.35) !important;color:#fff !important}
+
 .card-head{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
 .logo-wrap{width:42px;height:42px;border-radius:10px;background:var(--glass2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
 .logo-wrap img{width:28px;height:28px;object-fit:contain}
@@ -48,7 +72,7 @@ header{position:sticky;top:0;z-index:50;backdrop-filter:blur(24px);background:rg
 .card-name{flex:1;min-width:0}
 .card-ticker{font-size:18px;font-weight:800;letter-spacing:-.02em;font-family:'SF Mono','Fira Code',monospace}
 .card-company{font-size:12px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card-chart-hint{font-size:10px;color:var(--muted);margin-left:auto;opacity:.6;white-space:nowrap}
+.card-chart-hint{font-size:10px;color:var(--muted);opacity:.6;white-space:nowrap;margin-right:28px}
 .price-row{display:flex;align-items:flex-end;gap:10px;margin-bottom:.6rem}
 .price-current{font-size:28px;font-weight:800;letter-spacing:-.03em;font-family:'SF Mono','Fira Code',monospace}
 .price-arrow{font-size:22px;font-weight:700;line-height:1}
@@ -57,10 +81,7 @@ header{position:sticky;top:0;z-index:50;backdrop-filter:blur(24px);background:rg
 .price-change.up{color:var(--up)}.price-change.down{color:var(--down)}.price-change.flat{color:var(--flat)}
 .price-open{font-size:12px;color:var(--muted);margin-bottom:.9rem}
 .price-open span{color:var(--text);font-weight:600}
-
-/* Mini sparkline inside card */
 .mini-chart{height:52px;margin-bottom:.9rem;border-radius:var(--radius-sm);overflow:hidden;position:relative}
-
 .risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.9rem}
 .risk-field label{font-size:11px;color:var(--muted);display:block;margin-bottom:4px;letter-spacing:.04em;text-transform:uppercase}
 .risk-field input{width:100%;background:var(--glass2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:14px;font-weight:600;padding:7px 10px;outline:none;font-family:'SF Mono','Fira Code',monospace;transition:border-color .15s}
@@ -110,7 +131,6 @@ header{position:sticky;top:0;z-index:50;backdrop-filter:blur(24px);background:rg
 .chart-type-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s}
 .chart-type-btn.active{background:var(--glass2);color:var(--text);border-color:var(--border2)}
 
-/* Alerts */
 .alerts-section{margin-top:2rem}
 .alerts-title{font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}
 .alert-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:var(--radius-sm);border:1px solid transparent;font-size:13px;margin-bottom:8px}
@@ -129,7 +149,6 @@ footer{text-align:center;padding:2rem 0 1rem;font-size:12px;color:var(--muted);p
 <canvas id="bg"></canvas>
 <div id="toast"></div>
 
-<!-- Chart Modal -->
 <div class="modal-backdrop" id="chartModal">
   <div class="modal">
     <div class="modal-header">
@@ -144,11 +163,10 @@ footer{text-align:center;padding:2rem 0 1rem;font-size:12px;color:var(--muted);p
       <button class="modal-close" onclick="closeModal()">×</button>
     </div>
     <div class="chart-tabs">
-      <button class="chart-tab active" onclick="setResolution('1','D',1)">1D</button>
-      <button class="chart-tab" onclick="setResolution('5','W',1)">1W</button>
-      <button class="chart-tab" onclick="setResolution('15','M',1)">1M</button>
-      <button class="chart-tab" onclick="setResolution('60','M',3)">3M</button>
-      <button class="chart-tab" onclick="setResolution('D','Y',1)">1Y</button>
+      <button class="chart-tab active" data-days="5">1W</button>
+      <button class="chart-tab" data-days="30">1M</button>
+      <button class="chart-tab" data-days="90">3M</button>
+      <button class="chart-tab" data-days="365">1Y</button>
     </div>
     <div class="chart-area">
       <div id="chartLoading" class="chart-loading">Loading chart…</div>
@@ -183,14 +201,25 @@ footer{text-align:center;padding:2rem 0 1rem;font-size:12px;color:var(--muted);p
       Max/position: <span id="maxPos">£30.00</span>
     </div>
   </div>
+
+  <!-- Add stock bar -->
+  <div class="add-stock-bar">
+    <div class="add-stock-wrap">
+      <input type="text" id="stockSearch" placeholder="Add any ticker (e.g. SIVE, RKLB…)" autocomplete="off" maxlength="10">
+      <button class="btn-add" onclick="addStock()">+ Add stock</button>
+      <div class="stock-dropdown" id="stockDropdown"></div>
+    </div>
+    <span class="add-stock-hint" id="stockCount">7 stocks tracked · hover card to remove</span>
+  </div>
+
   <div class="grid" id="grid"></div>
   <div class="alerts-section">
     <div class="alerts-title">Alert history</div>
     <div id="alertHistory"><div class="no-alerts">No alerts triggered yet.</div></div>
-  </diillv>
+  </div>
 </div>
 
-<footer>Not financial advice · Rocket Roy Risk Dashboard · Prices via Finnhub · Click any card to open live chart</footer>
+<footer>Not financial advice · Rocket Roy Risk Dashboard · Prices via Finnhub · Click card to chart</footer>
 
 <script>
 const FINNHUB_KEY = CONFIG.FINNHUB_KEY;
@@ -198,7 +227,7 @@ const HTTP_BACKEND = 'http://127.0.0.1:5001';
 const WS_BACKEND   = 'ws://127.0.0.1:5002';
 const REFRESH_MS   = 30000;
 
-const STOCKS = [
+const DEFAULT_STOCKS = [
   {ticker:'AAPL', name:'Apple Inc.',      logo:'https://www.google.com/s2/favicons?domain=apple.com&sz=128'},
   {ticker:'MSFT', name:'Microsoft Corp.', logo:'https://www.google.com/s2/favicons?domain=microsoft.com&sz=128'},
   {ticker:'GOOGL',name:'Alphabet Inc.',   logo:'https://www.google.com/s2/favicons?domain=google.com&sz=128'},
@@ -208,15 +237,132 @@ const STOCKS = [
   {ticker:'TSLA', name:'Tesla Inc.',      logo:'https://www.google.com/s2/favicons?domain=tesla.com&sz=128'},
 ];
 
+const KNOWN_TICKERS = [
+  {ticker:'SPCX',name:'SpaceX'},{ticker:'LUNR',name:'Intuitive Machines'},{ticker:'PL',name:'Planet Labs'},
+  {ticker:'RKLB',name:'Rocket Lab'},{ticker:'BKSY',name:'BlackSky Technology'},{ticker:'SPCE',name:'Virgin Galactic'},
+  {ticker:'BA',name:'Boeing'},{ticker:'LMT',name:'Lockheed Martin'},{ticker:'RIVN',name:'Rivian'},
+  {ticker:'PLTR',name:'Palantir'},{ticker:'SNOW',name:'Snowflake'},{ticker:'CRWD',name:'CrowdStrike'},
+  {ticker:'NET',name:'Cloudflare'},{ticker:'DDOG',name:'Datadog'},{ticker:'COIN',name:'Coinbase'},
+  {ticker:'HOOD',name:'Robinhood'},{ticker:'SHOP',name:'Shopify'},{ticker:'SPOT',name:'Spotify'},
+  {ticker:'NFLX',name:'Netflix'},{ticker:'UBER',name:'Uber'},{ticker:'ABNB',name:'Airbnb'},
+  {ticker:'DASH',name:'DoorDash'},{ticker:'AMD',name:'AMD'},{ticker:'INTC',name:'Intel'},
+  {ticker:'QCOM',name:'Qualcomm'},{ticker:'ARM',name:'Arm Holdings'},{ticker:'TSM',name:'TSMC'},
+  {ticker:'BABA',name:'Alibaba'},{ticker:'NIO',name:'NIO Inc.'},{ticker:'BIDU',name:'Baidu'},
+  {ticker:'V',name:'Visa'},{ticker:'MA',name:'Mastercard'},{ticker:'JPM',name:'JPMorgan Chase'},
+  {ticker:'GS',name:'Goldman Sachs'},{ticker:'PYPL',name:'PayPal'},{ticker:'SQ',name:'Block Inc.'},
+  {ticker:'DIS',name:'Disney'},{ticker:'VOO',name:'Vanguard S&P 500'},{ticker:'QQQ',name:'Nasdaq 100 ETF'},
+  {ticker:'SPY',name:'S&P 500 SPDR'},{ticker:'SMCI',name:'Super Micro'},{ticker:'ASML',name:'ASML'},
+];
+
+let STOCKS = [];
 let state={}, alertHistory=[], backendOnline=false, positions={};
 let liveSocket=null, liveConnected=false;
-let chartInstance=null, currentTicker=null, currentResolution='1', currentChartType='candlestick';
+let chartInstance=null, currentTicker=null, currentChartType='candlestick';
 let miniCharts={};
 
-STOCKS.forEach(s=>{
-  state[s.ticker]={price:null,open:null,analyst:null,news:[],candles:[]};
-  positions[s.ticker]={buyPrice:'',shares:''};
-});
+/* ── Stock persistence ── */
+function loadStocks(){
+  try{
+    const saved=localStorage.getItem('rr_stocks');
+    STOCKS=saved?JSON.parse(saved):[...DEFAULT_STOCKS];
+  }catch(e){STOCKS=[...DEFAULT_STOCKS]}
+  STOCKS.forEach(s=>{
+    if(!state[s.ticker])state[s.ticker]={price:null,open:null,analyst:null,news:[],candles:[]};
+    if(!positions[s.ticker])positions[s.ticker]={buyPrice:'',shares:''};
+  });
+  updateStockCount();
+}
+
+function saveStocks(){
+  try{localStorage.setItem('rr_stocks',JSON.stringify(STOCKS))}catch(e){}
+  updateStockCount();
+}
+
+function updateStockCount(){
+  document.getElementById('stockCount').textContent=`${STOCKS.length} stock${STOCKS.length!==1?'s':''} tracked · hover card to remove`;
+}
+
+/* ── Add stock ── */
+async function addStock(){
+  const input=document.getElementById('stockSearch');
+  const ticker=input.value.trim().toUpperCase();
+  if(!ticker)return;
+  if(STOCKS.find(s=>s.ticker===ticker)){toast(`${ticker} is already tracked.`);input.value='';closeDropdown();return}
+  toast(`Looking up ${ticker}…`);
+  try{
+    const r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_KEY}`);
+    const d=await r.json();
+    if(!d||!d.c||d.c===0){toast(`❌ ${ticker} not found — check the ticker symbol.`);return}
+    let name=ticker;
+    try{
+      const pr=await fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${FINNHUB_KEY}`);
+      const pd=await pr.json();
+      if(pd&&pd.name)name=pd.name;
+    }catch(e){}
+    const stock={ticker,name,logo:`https://www.google.com/s2/favicons?domain=${ticker.toLowerCase()}.com&sz=128`};
+    STOCKS.push(stock);
+    state[ticker]={price:d.c,open:d.o,analyst:null,news:[],candles:[]};
+    positions[ticker]={buyPrice:'',shares:''};
+    saveStocks();
+    savePositions();
+    input.value='';
+    closeDropdown();
+    renderAll();
+    // fetch full data in background
+    Promise.all([fetchAnalyst(ticker),fetchNews(ticker),fetchCandles(ticker,30)]).then(([a,n,c])=>{
+      if(a)state[ticker].analyst=a;
+      if(n)state[ticker].news=n;
+      if(c){state[ticker].candles=c;renderMiniChart(ticker,c)}
+      renderAll();
+    });
+    toast(`✅ ${name} (${ticker}) added!`);
+  }catch(e){toast(`❌ Could not add ${ticker}.`)}
+}
+
+/* ── Remove stock ── */
+function removeStock(ticker,event){
+  event.stopPropagation();
+  if(!confirm(`Remove ${ticker} from your watchlist?`))return;
+  STOCKS=STOCKS.filter(s=>s.ticker!==ticker);
+  delete state[ticker];
+  delete positions[ticker];
+  saveStocks();
+  savePositions();
+  renderAll();
+  toast(`${ticker} removed.`);
+}
+
+/* ── Search dropdown ── */
+function initSearch(){
+  const input=document.getElementById('stockSearch');
+  const dd=document.getElementById('stockDropdown');
+  input.addEventListener('input',()=>{
+    const q=input.value.trim().toUpperCase();
+    if(!q){closeDropdown();return}
+    const matches=KNOWN_TICKERS.filter(s=>!STOCKS.find(e=>e.ticker===s.ticker)&&(s.ticker.startsWith(q)||s.name.toUpperCase().includes(q))).slice(0,7);
+    if(!matches.length){closeDropdown();return}
+    dd.innerHTML=matches.map(s=>`
+      <div class="sd-item" onmousedown="pickTicker('${s.ticker}')">
+        <div><div class="sd-ticker">${s.ticker}</div><div class="sd-name">${s.name}</div></div>
+      </div>`).join('');
+    dd.classList.add('open');
+  });
+  input.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){addStock();closeDropdown()}
+    else if(e.key==='Escape')closeDropdown()
+  });
+  input.addEventListener('blur',()=>setTimeout(closeDropdown,150));
+}
+
+function pickTicker(ticker){
+  document.getElementById('stockSearch').value=ticker;
+  closeDropdown();
+  addStock();
+}
+
+function closeDropdown(){
+  document.getElementById('stockDropdown').classList.remove('open');
+}
 
 /* ── Starfield ── */
 (function(){
@@ -245,7 +391,6 @@ STOCKS.forEach(s=>{
 const fmt  = n=>'£'+Math.abs(n).toFixed(2);
 const fmtP = n=>(n>=0?'+':'')+n.toFixed(2)+'%';
 const now  = ()=>new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-const tsToDate = ts=>new Date(ts*1000).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
 
 function toast(msg,dur=3500){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur)}
 function setStatus(label,online){document.getElementById('badgeDot').className='badge-dot'+(online?' online':'');document.getElementById('badgeLabel').textContent=label}
@@ -255,7 +400,7 @@ function updateAccountMeta(){const a=getAccount();document.getElementById('maxRi
 /* ── Risk engine ── */
 function checkRisk(ticker){
   const p=positions[ticker],s=state[ticker];
-  if(!p.buyPrice||!p.shares||!s.price)return;
+  if(!p||!s||!p.buyPrice||!p.shares||!s.price)return;
   const buy=parseFloat(p.buyPrice),shares=parseFloat(p.shares),price=s.price,acc=getAccount();
   if(!buy||!shares)return;
   const maxRisk=acc*.01,posRisk=shares*buy*.07,stopLoss=buy*.93,target=buy*1.14;
@@ -303,22 +448,13 @@ function connectLiveFeed(){
         const msg=JSON.parse(e.data);
         if(msg.type==='quote'&&msg.ticker&&msg.price){
           const t=msg.ticker,p=Number(msg.price);
-          if(state[t]&&p>0){
-            state[t].price=p;
-            updateCardPrice(t);
-            checkRisk(t);
-            // Push to modal chart if open
-            if(currentTicker===t&&chartInstance){
+          if(state[t]&&p>0){state[t].price=p;updateCardPrice(t);checkRisk(t);document.getElementById('refreshTime').textContent=`Live · ${now()}`}
+          if(currentTicker===t&&chartInstance){
+            try{
               const ts=Math.floor(Date.now()/1000);
-              try{
-                if(currentChartType==='line'||currentChartType==='area'){
-                  chartInstance.update({time:ts,value:p});
-                } else {
-                  chartInstance.update({time:ts,open:p,high:p,low:p,close:p});
-                }
-              }catch(err){}
-            }
-            document.getElementById('refreshTime').textContent=`Live · ${now()}`;
+              if(currentChartType==='line'||currentChartType==='area')chartInstance.series.update({time:ts,value:p});
+              else chartInstance.series.update({time:ts,open:p,high:p,low:p,close:p});
+            }catch(err){}
           }
         }
       }catch(err){}
@@ -333,29 +469,25 @@ async function fetchQuote(ticker){try{const r=await fetch(`https://finnhub.io/ap
 async function fetchAnalyst(ticker){try{const r=await fetch(`https://finnhub.io/api/v1/stock/recommendation?symbol=${ticker}&token=${FINNHUB_KEY}`);const d=await r.json();return d&&d.length?d[0]:null}catch(e){return null}}
 async function fetchNews(ticker){try{const to=new Date().toISOString().split('T')[0];const from=new Date(Date.now()-7*86400000).toISOString().split('T')[0];const r=await fetch(`https://finnhub.io/api/v1/company-news?symbol=${ticker}&from=${from}&to=${to}&token=${FINNHUB_KEY}`);const d=await r.json();return Array.isArray(d)?d.slice(0,5):[]}catch(e){return[]}}
 
-async function fetchCandles(ticker, resolution, fromDays){
-  const interval = fromDays <= 7 ? '5m' : fromDays <= 30 ? '1h' : '1d';
-  const range = fromDays <= 1 ? '1d' : fromDays <= 7 ? '5d' : fromDays <= 30 ? '1mo' : fromDays <= 90 ? '3mo' : '1y';
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=${interval}&range=${range}`;
-  const proxy = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+/* ── Yahoo Finance candles via proxy ── */
+async function fetchCandles(ticker,fromDays){
+  const interval=fromDays<=7?'5m':fromDays<=30?'1h':'1d';
+  const range=fromDays<=1?'1d':fromDays<=7?'5d':fromDays<=30?'1mo':fromDays<=90?'3mo':'1y';
+  const url=`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=${interval}&range=${range}`;
+  const proxy=`https://corsproxy.io/?${encodeURIComponent(url)}`;
   try{
-    const r = await fetch(proxy);
-    const d = await r.json();
-    const result = d?.chart?.result?.[0];
-    if(!result) return null;
-    const ts = result.timestamp;
-    const q = result.indicators.quote[0];
-    return ts.map((t,i)=>({
-      time: t,
-      open: q.open[i], high: q.high[i],
-      low: q.low[i],   close: q.close[i],
-      volume: q.volume[i]
-    })).filter(c=>c.open&&c.close);
-  }catch(e){ return null; }
+    const r=await fetch(proxy);
+    const d=await r.json();
+    const result=d?.chart?.result?.[0];
+    if(!result)return null;
+    const ts=result.timestamp;
+    const q=result.indicators.quote[0];
+    return ts.map((t,i)=>({time:t,open:q.open[i],high:q.high[i],low:q.low[i],close:q.close[i],volume:q.volume[i]})).filter(c=>c.open&&c.close);
+  }catch(e){return null}
 }
 
-/* ── Mini sparkline in card ── */
-function renderMiniChart(ticker, candles){
+/* ── Mini sparkline ── */
+function renderMiniChart(ticker,candles){
   const el=document.getElementById(`mini-${ticker}`);
   if(!el||!candles||candles.length<2)return;
   el.innerHTML='';
@@ -363,94 +495,70 @@ function renderMiniChart(ticker, candles){
     width:el.offsetWidth||300,height:52,
     layout:{background:{type:'solid',color:'transparent'},textColor:'transparent'},
     grid:{vertLines:{visible:false},horzLines:{visible:false}},
-    crosshair:{visible:false},
-    rightPriceScale:{visible:false},
-    leftPriceScale:{visible:false},
-    timeScale:{visible:false},
-    handleScroll:false,handleScale:false,
+    crosshair:{visible:false},rightPriceScale:{visible:false},leftPriceScale:{visible:false},
+    timeScale:{visible:false},handleScroll:false,handleScale:false,
   });
   const isUp=candles[candles.length-1].close>=candles[0].open;
   const color=isUp?'#22c55e':'#ef4444';
-  const area=chart.addAreaSeries({
-    lineColor:color,topColor:color.replace(')',',0.3)').replace('rgb','rgba'),
-    bottomColor:'rgba(0,0,0,0)',lineWidth:2,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false,
-  });
+  const area=chart.addAreaSeries({lineColor:color,topColor:color+'55',bottomColor:'rgba(0,0,0,0)',lineWidth:2,priceLineVisible:false,lastValueVisible:false,crosshairMarkerVisible:false});
   area.setData(candles.map(c=>({time:c.time,value:c.close})));
   chart.timeScale().fitContent();
   miniCharts[ticker]=chart;
 }
 
-/* ── Main chart modal ── */
+/* ── Chart modal ── */
 function openModal(ticker){
   currentTicker=ticker;
   document.getElementById('chartModal').classList.add('open');
   document.getElementById('modalTicker').textContent=ticker;
-  const s=state[ticker];
   updateModalHeader(ticker);
-  setResolution('1','D',1);
+  // click first tab
+  document.querySelector('.chart-tab').click();
 }
 
 function updateModalHeader(ticker){
   const s=state[ticker];
-  if(!s.price)return;
+  if(!s||!s.price)return;
   const cls=(s.price&&s.open)?dirClass(s.price,s.open):'flat';
   const chg=(s.price&&s.open)?((s.price-s.open)/s.open*100):0;
   document.getElementById('modalPrice').textContent='$'+s.price.toFixed(2);
   const chgEl=document.getElementById('modalChange');
-  chgEl.textContent=fmtP(chg);
-  chgEl.className=`modal-change ${cls}`;
+  chgEl.textContent=fmtP(chg);chgEl.className=`modal-change ${cls}`;
 }
 
-async function setResolution(resolution, label, days){
-  currentResolution=resolution;
-  // Update tab UI
-  document.querySelectorAll('.chart-tab').forEach(t=>{
-    t.classList.toggle('active',t.textContent===(['1D','1W','1M','3M','1Y'][['D','W','M','3M','Y'].indexOf(label)]||label));
+document.querySelectorAll('.chart-tab').forEach(tab=>{
+  tab.addEventListener('click',async()=>{
+    document.querySelectorAll('.chart-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    if(currentTicker) await loadChart(currentTicker,parseInt(tab.dataset.days));
   });
-  // Map label to days
-  const daysMap={'1D':1,'1W':7,'1M':30,'3M':90,'1Y':365};
-  const fromDays=daysMap[label]||days*30;
-  await loadChart(currentTicker, resolution, fromDays);
-}
-
-// Fix tab click mapping
-document.querySelectorAll('.chart-tab').forEach((t,i)=>{
-  const configs=[['D','D',5],['D','W',7],['D','M',30],['D','3M',90],['D','Y',365]];
-  t.onclick=()=>loadChartByConfig(configs[i]);
 });
 
-async function loadChartByConfig([res,label,days]){
-  document.querySelectorAll('.chart-tab').forEach(t=>t.classList.remove('active'));
-  event.target.classList.add('active');
-  await loadChart(currentTicker,res,days);
-}
-
-async function loadChart(ticker, resolution, fromDays){
+async function loadChart(ticker,fromDays){
   if(!ticker)return;
   document.getElementById('chartLoading').style.display='flex';
+  document.getElementById('chartLoading').textContent='Loading chart…';
   document.getElementById('chartContainer').style.display='none';
   document.getElementById('chartStats').innerHTML='';
-  if(chartInstance){try{chartInstance.chart&&chartInstance.chart.remove()}catch(e){}chartInstance=null}
+  if(chartInstance){try{chartInstance.chart.remove()}catch(e){}chartInstance=null}
 
-  const candles=await fetchCandles(ticker,resolution,fromDays);
+  const candles=await fetchCandles(ticker,fromDays);
   document.getElementById('chartLoading').style.display='none';
 
-  if(!candles||candles.length===0){
+  if(!candles||!candles.length){
     document.getElementById('chartLoading').textContent='No chart data available.';
     document.getElementById('chartLoading').style.display='flex';
     return;
   }
 
   const container=document.getElementById('chartContainer');
-  container.style.display='block';
-  container.innerHTML='';
+  container.style.display='block';container.innerHTML='';
 
   const isUp=candles[candles.length-1].close>=candles[0].open;
-  const upColor='#22c55e', downColor='#ef4444';
+  const upColor='#22c55e',downColor='#ef4444';
 
   const chart=LightweightCharts.createChart(container,{
-    width:container.offsetWidth,
-    height:380,
+    width:container.offsetWidth,height:380,
     layout:{background:{type:'solid',color:'#0c0d14'},textColor:'rgba(255,255,255,0.5)'},
     grid:{vertLines:{color:'rgba(255,255,255,0.04)'},horzLines:{color:'rgba(255,255,255,0.04)'}},
     crosshair:{mode:LightweightCharts.CrosshairMode.Normal},
@@ -461,24 +569,16 @@ async function loadChart(ticker, resolution, fromDays){
 
   let series;
   if(currentChartType==='candlestick'){
-    series=chart.addCandlestickSeries({
-      upColor,downColor,borderUpColor:upColor,borderDownColor:downColor,
-      wickUpColor:upColor,wickDownColor:downColor,
-    });
+    series=chart.addCandlestickSeries({upColor,downColor,borderUpColor:upColor,borderDownColor:downColor,wickUpColor:upColor,wickDownColor:downColor});
     series.setData(candles.map(c=>({time:c.time,open:c.open,high:c.high,low:c.low,close:c.close})));
   } else if(currentChartType==='line'){
     series=chart.addLineSeries({color:isUp?upColor:downColor,lineWidth:2,priceLineVisible:false});
     series.setData(candles.map(c=>({time:c.time,value:c.close})));
   } else {
-    series=chart.addAreaSeries({
-      lineColor:isUp?upColor:downColor,
-      topColor:isUp?'rgba(34,197,94,0.3)':'rgba(239,68,68,0.3)',
-      bottomColor:'rgba(0,0,0,0)',lineWidth:2,priceLineVisible:false,
-    });
+    series=chart.addAreaSeries({lineColor:isUp?upColor:downColor,topColor:isUp?'rgba(34,197,94,0.3)':'rgba(239,68,68,0.3)',bottomColor:'rgba(0,0,0,0)',lineWidth:2,priceLineVisible:false});
     series.setData(candles.map(c=>({time:c.time,value:c.close})));
   }
 
-  // Add buy price line if set
   const p=positions[ticker];
   if(p&&p.buyPrice){
     const buy=parseFloat(p.buyPrice);
@@ -491,32 +591,21 @@ async function loadChart(ticker, resolution, fromDays){
 
   chart.timeScale().fitContent();
   chartInstance={chart,series};
+  new ResizeObserver(()=>chart.applyOptions({width:container.offsetWidth})).observe(container);
 
-  // Handle resize
-  const ro=new ResizeObserver(()=>chart.applyOptions({width:container.offsetWidth}));
-  ro.observe(container);
-
-  // Stats
-  const closes=candles.map(c=>c.close);
-  const highs=candles.map(c=>c.high);
-  const lows=candles.map(c=>c.low);
-  const first=candles[0].open,last=candles[candles.length-1].close;
-  const chg=((last-first)/first*100);
-  const vol=candles.reduce((s,c)=>s+(c.volume||0),0);
+  const highs=candles.map(c=>c.high),lows=candles.map(c=>c.low);
+  const first=candles[0].open,last=candles[candles.length-1].close,chg=((last-first)/first*100);
   document.getElementById('chartStats').innerHTML=`
     <div class="chart-stat"><div class="chart-stat-label">Current</div><div class="chart-stat-value">$${last.toFixed(2)}</div></div>
     <div class="chart-stat"><div class="chart-stat-label">Period change</div><div class="chart-stat-value" style="color:${chg>=0?upColor:downColor}">${fmtP(chg)}</div></div>
     <div class="chart-stat"><div class="chart-stat-label">Period high</div><div class="chart-stat-value" style="color:${upColor}">$${Math.max(...highs).toFixed(2)}</div></div>
     <div class="chart-stat"><div class="chart-stat-label">Period low</div><div class="chart-stat-value" style="color:${downColor}">$${Math.min(...lows).toFixed(2)}</div></div>`;
-
-  // Update mini chart
-  if(fromDays<=7) renderMiniChart(ticker,candles);
 }
 
 function setChartType(type){
   currentChartType=type;
   document.querySelectorAll('.chart-type-btn').forEach(b=>b.classList.toggle('active',b.textContent.toLowerCase()===type||(type==='candlestick'&&b.textContent==='Candles')));
-  if(currentTicker) document.querySelector('.chart-tab.active')?.click();
+  if(currentTicker)document.querySelector('.chart-tab.active')?.click();
 }
 
 function closeModal(){
@@ -524,7 +613,6 @@ function closeModal(){
   if(chartInstance){try{chartInstance.chart.remove()}catch(e){}chartInstance=null}
   currentTicker=null;
 }
-
 document.getElementById('chartModal').addEventListener('click',e=>{if(e.target===document.getElementById('chartModal'))closeModal()});
 
 /* ── Card render ── */
@@ -532,7 +620,8 @@ function dirClass(price,open){if(!open||price===open)return'flat';return price>o
 function arrow(cls){return cls==='up'?'▲':cls==='down'?'▼':'↕'}
 
 function renderCard(stock){
-  const s=state[stock.ticker],p=positions[stock.ticker];
+  const s=state[stock.ticker]||{price:null,open:null,analyst:null,news:[],candles:[]};
+  const p=positions[stock.ticker]||{buyPrice:'',shares:''};
   const cls=(s.price&&s.open)?dirClass(s.price,s.open):'flat';
   const chg=(s.price&&s.open)?((s.price-s.open)/s.open*100):0;
   let buy=0,hold=0,sell=0,total=0;
@@ -540,6 +629,7 @@ function renderCard(stock){
   const acc=getAccount(),buyP=parseFloat(p.buyPrice)||0;
   const stop=buyP?'$'+(buyP*.93).toFixed(2):'—',target=buyP?'$'+(buyP*1.14).toFixed(2):'—';
   return `<div class="card ${cls}" id="card-${stock.ticker}" onclick="openModal('${stock.ticker}')">
+    <button class="card-remove" onclick="removeStock('${stock.ticker}',event)" title="Remove ${stock.ticker}">✕</button>
     <div class="card-head">
       <div class="logo-wrap">
         <img src="${stock.logo}" alt="${stock.ticker}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -580,9 +670,12 @@ function renderCard(stock){
 function renderAll(){
   document.getElementById('grid').innerHTML=STOCKS.map(renderCard).join('');
   updateAccountMeta();
-  STOCKS.forEach(s=>checkRisk(s.ticker));
-  // Render mini charts with existing candle data
-  STOCKS.forEach(s=>{if(state[s.ticker].candles.length)renderMiniChart(s.ticker,state[s.ticker].candles)});
+  updateStockCount();
+  STOCKS.forEach(s=>{
+    checkRisk(s.ticker);
+    if(state[s.ticker]&&state[s.ticker].candles&&state[s.ticker].candles.length)
+      renderMiniChart(s.ticker,state[s.ticker].candles);
+  });
 }
 
 function updateCardPrice(ticker){
@@ -592,7 +685,7 @@ function updateCardPrice(ticker){
   const card=document.getElementById(`card-${ticker}`);
   if(!card)return;
   card.className=`card ${cls}`;
-  const pe=card.querySelector('.price-current');const ae=card.querySelector('.price-arrow');const ce=card.querySelector('.price-change');
+  const pe=card.querySelector('.price-current'),ae=card.querySelector('.price-arrow'),ce=card.querySelector('.price-change');
   if(pe)pe.textContent=s.price?'$'+s.price.toFixed(2):'—';
   if(ae){ae.className=`price-arrow ${cls}`;ae.textContent=arrow(cls)}
   if(ce){ce.className=`price-change ${cls}`;ce.textContent=(s.price&&s.open)?fmtP(chg):''}
@@ -620,22 +713,27 @@ async function refreshQuotes(){
   await pingBackend();
   if(!backendOnline)setStatus('Backend offline',false);
   await Promise.all(STOCKS.map(async stock=>{
+    if(!state[stock.ticker])state[stock.ticker]={price:null,open:null,analyst:null,news:[],candles:[]};
     const[quote,analyst,news,candles]=await Promise.all([
-      fetchQuote(stock.ticker),fetchAnalyst(stock.ticker),fetchNews(stock.ticker),
-      fetchCandles(stock.ticker,'D',30)
+      fetchQuote(stock.ticker),fetchAnalyst(stock.ticker),fetchNews(stock.ticker),fetchCandles(stock.ticker,30)
     ]);
     if(quote){if(quote.c>0)state[stock.ticker].price=quote.c;if(quote.o>0)state[stock.ticker].open=quote.o}
     if(analyst)state[stock.ticker].analyst=analyst;
     if(news)state[stock.ticker].news=news;
-    if(candles){state[stock.ticker].candles=candles}
+    if(candles)state[stock.ticker].candles=candles;
   }));
   renderAll();
   if(!liveConnected)document.getElementById('refreshTime').textContent=`Quotes · ${now()}`;
 }
 
-document.getElementById('accountSize').addEventListener('input',()=>{updateAccountMeta();savePositions();STOCKS.forEach(s=>{updateCardRisk(s.ticker);checkRisk(s.ticker)})});
+document.getElementById('accountSize').addEventListener('input',()=>{
+  updateAccountMeta();savePositions();
+  STOCKS.forEach(s=>{if(state[s.ticker]){updateCardRisk(s.ticker);checkRisk(s.ticker)}});
+});
 
 loadPositions();
+loadStocks();
+initSearch();
 renderAll();
 refreshQuotes();
 connectLiveFeed();
