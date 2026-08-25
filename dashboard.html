@@ -474,7 +474,7 @@ async function fetchCandles(ticker,fromDays){
   const interval=fromDays<=7?'5m':fromDays<=30?'1h':'1d';
   const range=fromDays<=1?'1d':fromDays<=7?'5d':fromDays<=30?'1mo':fromDays<=90?'3mo':'1y';
   const url=`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=${interval}&range=${range}`;
-  const proxy=`https://corsproxy.io/?${encodeURIComponent(url)}`;
+  const proxy=`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`;
   try{
     const r=await fetch(proxy);
     const d=await r.json();
