@@ -204,8 +204,8 @@ def get_alerts():
 @app.route('/test-email', methods=['POST'])
 def test_email():
     ok = send_email(
-        '🚀 Mag7 Monitor — Test Email',
-        'This is a test email from your Magnificent 7 Risk Dashboard. SMTP is working correctly.',
+        '🚀 RocketRoy Monitor — Test Email',
+        'This is a test email from your Rocket Roy Risk Dashboard. SMTP is working correctly.',
         '<div style="font-family:monospace;background:#07080f;color:#eef0f8;padding:32px;border-radius:12px"><h2 style="color:#6c63ff">🚀 Mag7 Monitor</h2><p>SMTP is working correctly. You will receive alerts when risk rules are triggered.</p><p style="color:#444;font-size:12px;margin-top:16px">Not financial advice.</p></div>'
     )
     return jsonify({'ok': ok})
@@ -215,7 +215,7 @@ def test_email():
 if __name__ == '__main__':
     print(f'''
 ╔══════════════════════════════════════════╗
-║   Magnificent 7 — Alert Service          ║
+║   Rocket Roy — Alert Service          ║
 ║   Polling every {POLL_INTERVAL}s on port {PORT}           ║
 ║   Email → {ALERT_EMAIL[:30]}  ║
 ╚══════════════════════════════════════════╝
