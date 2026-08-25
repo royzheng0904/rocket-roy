@@ -25,18 +25,20 @@ import time
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-
 import requests
 import websockets
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from dotenv import load_dotenv
+load_dotenv()
 
-FINNHUB_KEY = os.getenv("FINNHUB_KEY", "da6r941r01qqqkkgsvm0")
+
 SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT = 587
 GMAIL_USER = os.getenv("GMAIL_USER", "")
 GMAIL_PASS = os.getenv("GMAIL_PASS", "")
 ALERT_EMAIL = os.getenv("ALERT_EMAIL", "roy20020904@gmail.com")
+FINNHUB_KEY = os.getenv("FINNHUB_KEY")
 
 PORT = 5001
 REST_INTERVAL = 30
