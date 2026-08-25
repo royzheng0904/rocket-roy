@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Rocket Roy — Live Magnificent 7 Alert Service
+Rocket Roy — Live Stock Alert Service
 
 Run:
     pip install flask flask-cors requests websockets
