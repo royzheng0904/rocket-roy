@@ -5,7 +5,7 @@ Real-time monitoring dashboard for AAPL, MSFT, GOOGL, AMZN, NVDA, META, TSLA wit
 ## Quick start
 
 ### 1 — Open the dashboard
-Just open `dashboard.html` in your browser. No server needed for the frontend.
+Just open `dashboard.html` in your browser. No server needed for the frontend. or https://yourusername.github.io/rocket-roy/dashboard.html using github pages
 
 ### 2 — Start the alert backend (for email alerts)
 
