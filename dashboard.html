@@ -230,7 +230,7 @@ footer{text-align:center;padding:2rem 0 1rem;font-size:12px;color:var(--muted);p
         <div class="badge-dot" id="badgeDot"></div>
         <span id="badgeLabel">Backend offline</span>
       </div>
-      <span class="refresh-time" id="refreshTime">—</span>
+      <span class="refresh-time" id="refreshTime">Connecting…</span>
       <button class="btn-test" onclick="testEmail()">✉ Test email</button>
     </div>
   </div>
@@ -613,32 +613,114 @@ function loadPositions(){
 }
 
 /* ── Main refresh loop ── */
-async function refreshAll(){
-  document.getElementById('refreshTime').textContent = 'Updating...';
+let liveSocket = null;
+let liveConnected = false;
+let fallbackTimer = null;
+let metadataTimer = null;
+
+function setLiveStatus(text, online=false){
+  document.getElementById('refreshTime').textContent = text;
+  const dot = document.getElementById('badgeDot');
+  const label = document.getElementById('badgeLabel');
+  if(online){
+    dot.className = 'badge-dot online';
+    label.textContent = 'Live feed';
+  } else {
+    dot.className = 'badge-dot';
+    label.textContent = 'Feed reconnecting';
+  }
+}
+
+function applyLiveTrade(ticker, price){
+  if(!state[ticker]) return;
+  if(typeof price !== 'number' || !Number.isFinite(price) || price <= 0) return;
+  state[ticker].price = price;
+  renderAll();
+  document.getElementById('refreshTime').textContent = `Live · ${now()}`;
+}
+
+function connectLiveFeed(){
+  if(liveSocket && (liveSocket.readyState === WebSocket.OPEN ||
+                    liveSocket.readyState === WebSocket.CONNECTING)) return;
+
+  setLiveStatus('Connecting live feed…');
+
+  // The backend proxies the Finnhub WebSocket so the API key is not exposed here.
+  try {
+    liveSocket = new WebSocket('ws://127.0.0.1:5001/ws');
+
+    liveSocket.onopen = () => {
+      liveConnected = true;
+      setLiveStatus(`Live · ${now()}`, true);
+    };
+
+    liveSocket.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+        if(msg.type === 'trade' && msg.data){
+          msg.data.forEach(t => applyLiveTrade(t.s, Number(t.p)));
+        } else if(msg.type === 'quote'){
+          applyLiveTrade(msg.ticker, Number(msg.price));
+        }
+      } catch(e) {}
+    };
+
+    liveSocket.onerror = () => {
+      liveConnected = false;
+      setLiveStatus('Live feed unavailable — using quotes');
+    };
+
+    liveSocket.onclose = () => {
+      liveConnected = false;
+      setLiveStatus('Reconnecting live feed…');
+      setTimeout(connectLiveFeed, 3000);
+    };
+  } catch(e) {
+    liveConnected = false;
+    setLiveStatus('Live feed unavailable — using quotes');
+    setTimeout(connectLiveFeed, 3000);
+  }
+}
+
+async function refreshQuotesFallback(){
+  // REST fallback + opening prices. This also refreshes analyst/news data.
   await pingBackend();
 
-  // Fetch all in parallel
   await Promise.all(STOCKS.map(async stock=>{
     const [quote, analyst, news] = await Promise.all([
       fetchQuote(stock.ticker),
       fetchAnalyst(stock.ticker),
       fetchNews(stock.ticker),
     ]);
-    if(quote){ state[stock.ticker].price=quote.c; state[stock.ticker].open=quote.o; }
+
+    if(quote){
+      if(Number.isFinite(quote.c) && quote.c > 0) state[stock.ticker].price = quote.c;
+      if(Number.isFinite(quote.o) && quote.o > 0) state[stock.ticker].open = quote.o;
+    }
     if(analyst) state[stock.ticker].analyst = analyst;
     if(news) state[stock.ticker].news = news;
   }));
 
   renderAll();
-  document.getElementById('refreshTime').textContent = `Updated ${now()}`;
+  if(!liveConnected) document.getElementById('refreshTime').textContent = `Quote refresh · ${now()}`;
 }
 
-/* ── Init ── */
+async function refreshAll(){
+  await refreshQuotesFallback();
+}
+
 loadPositions();
 renderAll();
 refreshAll();
-setInterval(refreshAll, REFRESH_MS);
+connectLiveFeed();
 
+// REST is retained as a safety net. Live prices come from the WebSocket when available.
+fallbackTimer = setInterval(refreshQuotesFallback, REFRESH_MS);
+
+// Analyst/news/open prices don't need second-by-second updates.
+metadataTimer = setInterval(refreshQuotesFallback, 5 * 60 * 1000);
+
+/* ── Init ── */
 document.getElementById('accountSize').addEventListener('input',()=>{
   updateAccountMeta();
   savePositions();
