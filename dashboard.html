@@ -337,11 +337,10 @@ async function fetchCandles(ticker, resolution, fromDays){
   const interval = fromDays <= 7 ? '5m' : fromDays <= 30 ? '1h' : '1d';
   const range = fromDays <= 1 ? '1d' : fromDays <= 7 ? '5d' : fromDays <= 30 ? '1mo' : fromDays <= 90 ? '3mo' : '1y';
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=${interval}&range=${range}`;
-  const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+  const proxy = `https://corsproxy.io/?${encodeURIComponent(url)}`;
   try{
     const r = await fetch(proxy);
-    const wrapper = await r.json();
-    const d = JSON.parse(wrapper.contents);
+    const d = await r.json();
     const result = d?.chart?.result?.[0];
     if(!result) return null;
     const ts = result.timestamp;
