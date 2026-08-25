@@ -187,7 +187,7 @@ footer{text-align:center;padding:2rem 0 1rem;font-size:12px;color:var(--muted);p
   <div class="alerts-section">
     <div class="alerts-title">Alert history</div>
     <div id="alertHistory"><div class="no-alerts">No alerts triggered yet.</div></div>
-  </div>
+  </diillv>
 </div>
 
 <footer>Not financial advice · Rocket Roy Risk Dashboard · Prices via Finnhub · Click any card to open live chart</footer>
@@ -405,7 +405,7 @@ async function setResolution(resolution, label, days){
 
 // Fix tab click mapping
 document.querySelectorAll('.chart-tab').forEach((t,i)=>{
-  const configs=[['1','D',1],['5','W',7],['15','M',30],['60','3M',90],['D','Y',365]];
+  const configs=[['D','D',5],['D','W',7],['D','M',30],['D','3M',90],['D','Y',365]];
   t.onclick=()=>loadChartByConfig(configs[i]);
 });
 
@@ -612,7 +612,7 @@ async function refreshQuotes(){
   await Promise.all(STOCKS.map(async stock=>{
     const[quote,analyst,news,candles]=await Promise.all([
       fetchQuote(stock.ticker),fetchAnalyst(stock.ticker),fetchNews(stock.ticker),
-      fetchCandles(stock.ticker,'1',1)
+      fetchCandles(stock.ticker,'D',30)
     ]);
     if(quote){if(quote.c>0)state[stock.ticker].price=quote.c;if(quote.o>0)state[stock.ticker].open=quote.o}
     if(analyst)state[stock.ticker].analyst=analyst;
