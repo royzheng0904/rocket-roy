@@ -1,4 +1,4 @@
-# 🚀 Magnificent 7 — Risk Dashboard
+# 🚀 rocket-roy — Risk Dashboard
 
 Real-time monitoring dashboard for AAPL, MSFT, GOOGL, AMZN, NVDA, META, TSLA with automated email alerts.
 
