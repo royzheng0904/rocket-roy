@@ -334,13 +334,14 @@ async function fetchAnalyst(ticker){try{const r=await fetch(`https://finnhub.io/
 async function fetchNews(ticker){try{const to=new Date().toISOString().split('T')[0];const from=new Date(Date.now()-7*86400000).toISOString().split('T')[0];const r=await fetch(`https://finnhub.io/api/v1/company-news?symbol=${ticker}&from=${from}&to=${to}&token=${FINNHUB_KEY}`);const d=await r.json();return Array.isArray(d)?d.slice(0,5):[]}catch(e){return[]}}
 
 async function fetchCandles(ticker, resolution, fromDays){
-  const to = Math.floor(Date.now()/1000);
-  const from = to - fromDays * 86400;
   const interval = fromDays <= 7 ? '5m' : fromDays <= 30 ? '1h' : '1d';
   const range = fromDays <= 1 ? '1d' : fromDays <= 7 ? '5d' : fromDays <= 30 ? '1mo' : fromDays <= 90 ? '3mo' : '1y';
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=${interval}&range=${range}`;
+  const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
   try{
-    const r = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=${interval}&range=${range}&corsDomain=finance.yahoo.com`);
-    const d = await r.json();
+    const r = await fetch(proxy);
+    const wrapper = await r.json();
+    const d = JSON.parse(wrapper.contents);
     const result = d?.chart?.result?.[0];
     if(!result) return null;
     const ts = result.timestamp;
