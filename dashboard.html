@@ -334,14 +334,24 @@ async function fetchAnalyst(ticker){try{const r=await fetch(`https://finnhub.io/
 async function fetchNews(ticker){try{const to=new Date().toISOString().split('T')[0];const from=new Date(Date.now()-7*86400000).toISOString().split('T')[0];const r=await fetch(`https://finnhub.io/api/v1/company-news?symbol=${ticker}&from=${from}&to=${to}&token=${FINNHUB_KEY}`);const d=await r.json();return Array.isArray(d)?d.slice(0,5):[]}catch(e){return[]}}
 
 async function fetchCandles(ticker, resolution, fromDays){
-  const to=Math.floor(Date.now()/1000);
-  const from=to-fromDays*86400;
+  const to = Math.floor(Date.now()/1000);
+  const from = to - fromDays * 86400;
+  const interval = fromDays <= 7 ? '5m' : fromDays <= 30 ? '1h' : '1d';
+  const range = fromDays <= 1 ? '1d' : fromDays <= 7 ? '5d' : fromDays <= 30 ? '1mo' : fromDays <= 90 ? '3mo' : '1y';
   try{
-    const r=await fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${ticker}&resolution=${resolution}&from=${from}&to=${to}&token=${FINNHUB_KEY}`);
-    const d=await r.json();
-    if(!d||d.s!=='ok'||!d.t||!d.t.length)return null;
-    return d.t.map((t,i)=>({time:t,open:d.o[i],high:d.h[i],low:d.l[i],close:d.c[i],volume:d.v[i]}));
-  }catch(e){return null}
+    const r = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=${interval}&range=${range}&corsDomain=finance.yahoo.com`);
+    const d = await r.json();
+    const result = d?.chart?.result?.[0];
+    if(!result) return null;
+    const ts = result.timestamp;
+    const q = result.indicators.quote[0];
+    return ts.map((t,i)=>({
+      time: t,
+      open: q.open[i], high: q.high[i],
+      low: q.low[i],   close: q.close[i],
+      volume: q.volume[i]
+    })).filter(c=>c.open&&c.close);
+  }catch(e){ return null; }
 }
 
 /* ── Mini sparkline in card ── */
